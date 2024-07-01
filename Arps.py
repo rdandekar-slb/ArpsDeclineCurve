@@ -5,6 +5,7 @@ from enum import Enum
 import math
 from tabulate import tabulate
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 
@@ -51,14 +52,32 @@ def get_arps_dc(initial_rate:float,initial_decline_rate:float,
     return dates,rates,cums
 
 
-dates, rates,cums=get_arps_dc(500,0.0005,start_date=dt(2020,1,1),end_date=dt(2030,1,1),forecast_frequency=ForecastFrequency.QUARTER,decline_exponent=0.65)
-dates1, rates1,cums1=get_arps_dc(500,0.0005,start_date=dt(2020,1,1),end_date=dt(2030,1,1),forecast_frequency=ForecastFrequency.QUARTER,decline_exponent=0.0)
-dates2, rates2,cums2=get_arps_dc(500,0.0005,start_date=dt(2020,1,1),end_date=dt(2030,1,1),forecast_frequency=ForecastFrequency.QUARTER,decline_exponent=1.0)
 
-output=[[dates[i].date(),rates[i],cums[i]] for i in range(len(dates))]
-print(tabulate(output))
-fig,ax=plt.subplots(figsize=(5,2.7))
-ax.plot(dates,rates)
-ax.plot(dates1,rates1)
-ax.plot(dates2,rates2)
-plt.show()
+if __name__=="__main__":
+    dates, rates,cums=get_arps_dc(500,0.0005,start_date=dt(2020,1,1),end_date=dt(2050,1,1),forecast_frequency=ForecastFrequency.QUARTER,decline_exponent=0.5)
+    _, rates1,cums1=get_arps_dc(500,0.0005,start_date=dt(2020,1,1),end_date=dt(2050,1,1),forecast_frequency=ForecastFrequency.QUARTER,decline_exponent=0.0)
+    _, rates2,cums2=get_arps_dc(500,0.0005,start_date=dt(2020,1,1),end_date=dt(2050,1,1),forecast_frequency=ForecastFrequency.QUARTER,decline_exponent=1e-8)
+
+
+    fig,ax=plt.subplots(figsize=(5,2.7))
+    # ax.plot(dates,rates)
+    ax.plot(dates,rates1)
+    ax.plot(dates,rates2)
+
+    with_noise=np.random.normal(loc=np.array(rates),scale=np.array(rates)*(0.25*np.random.rand()))
+    with_noise[0]=rates[0]
+    with_noise=np.array(with_noise)
+    # rates_gen=np.array(rates)+np.random.Generator.normal(loc=np.array(rates),scale=np.array(rates)*0.1)
+    # print(noise)
+    ax.plot(dates,with_noise,'o')
+    # plt.show()
+    times=[(dates[i]-dates[0]).days for i in range(len(dates))]
+    print(times)
+    np.set_printoptions(precision=4,floatmode='fixed',linewidth=1000000)
+    print(with_noise)
+
+    output=[[dates[i].date(),rates[i],cums[i]] for i in range(len(dates))]
+    # print(tabulate(output))
+
+    # output=[[rates1[i],rates2[i]] for i in range(len(rates1))]
+    # print(tabulate(output))
