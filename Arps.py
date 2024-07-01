@@ -60,24 +60,12 @@ if __name__=="__main__":
 
 
     fig,ax=plt.subplots(figsize=(5,2.7))
-    # ax.plot(dates,rates)
+    ax.plot(dates,rates)
     ax.plot(dates,rates1)
     ax.plot(dates,rates2)
 
-    with_noise=np.random.normal(loc=np.array(rates),scale=np.array(rates)*(0.25*np.random.rand()))
-    with_noise[0]=rates[0]
-    with_noise=np.array(with_noise)
-    # rates_gen=np.array(rates)+np.random.Generator.normal(loc=np.array(rates),scale=np.array(rates)*0.1)
-    # print(noise)
-    ax.plot(dates,with_noise,'o')
-    # plt.show()
-    times=[(dates[i]-dates[0]).days for i in range(len(dates))]
-    print(times)
-    np.set_printoptions(precision=4,floatmode='fixed',linewidth=1000000)
-    print(with_noise)
-
+ 
     output=[[dates[i].date(),rates[i],cums[i]] for i in range(len(dates))]
-    # print(tabulate(output))
+    print(tabulate(output))
 
-    # output=[[rates1[i],rates2[i]] for i in range(len(rates1))]
-    # print(tabulate(output))
+ 
