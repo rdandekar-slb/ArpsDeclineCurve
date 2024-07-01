@@ -56,14 +56,14 @@ def get_arps_dc(initial_rate:float,initial_decline_rate:float,
 if __name__=="__main__":
     dates, rates,cums=get_arps_dc(500,0.0005,start_date=dt(2020,1,1),end_date=dt(2050,1,1),forecast_frequency=ForecastFrequency.QUARTER,decline_exponent=0.5)
     _, rates1,cums1=get_arps_dc(500,0.0005,start_date=dt(2020,1,1),end_date=dt(2050,1,1),forecast_frequency=ForecastFrequency.QUARTER,decline_exponent=0.0)
-    _, rates2,cums2=get_arps_dc(500,0.0005,start_date=dt(2020,1,1),end_date=dt(2050,1,1),forecast_frequency=ForecastFrequency.QUARTER,decline_exponent=1e-8)
+    _, rates2,cums2=get_arps_dc(500,0.0005,start_date=dt(2020,1,1),end_date=dt(2050,1,1),forecast_frequency=ForecastFrequency.QUARTER,decline_exponent=1.0)
 
 
     fig,ax=plt.subplots(figsize=(5,2.7))
     ax.plot(dates,rates)
     ax.plot(dates,rates1)
     ax.plot(dates,rates2)
-
+    plt.show()
  
     output=[[dates[i].date(),rates[i],cums[i]] for i in range(len(dates))]
     print(tabulate(output))
